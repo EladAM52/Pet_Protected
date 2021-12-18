@@ -59,3 +59,54 @@ def logout_user(request):
     return redirect('home_page')
 
 
+@login_required
+def get_users(request):
+    if request.user.is_superuser or request.user:
+        user_list = list(User.objects.exclude(is_superuser=True)
+                                     .values('id', 'email', 'username', 'first_name', 'last_name', 'profile__phone_number','last_login'))
+
+        for user in user_list:
+            user['amount_posts'] = Post.objects.filter(author_id=user['id']).count()
+
+        return JsonResponse(
+            data={
+                "users": user_list
+            }
+        )
+    else:
+        return JsonResponse(
+            data={
+                "message": "unauthorized"
+            },
+            status=401
+        )
+
+
+@require_http_methods(['DELETE'])
+@login_required
+def delete_user(request):
+    if request.user.is_superuser:
+        user_id = request.GET['user_id']
+        try:
+            user = User.objects.exclude(is_superuser=True).get(id=user_id)
+            user.delete()
+            return JsonResponse(
+                data={
+                    "success": True
+                }
+            )
+        except ObjectDoesNotExist:
+            return JsonResponse(
+                data={
+                    "message": "User not found"
+                },
+                status=404
+            )
+    else:
+        return JsonResponse(
+            data={
+                "message": "unauthorized"
+            },
+            status=401
+        )
+
