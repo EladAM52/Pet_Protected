@@ -1,0 +1,42 @@
+body {
+    background-color: #FFFFFF;
+    font-size: 120%;
+
+
+}
+
+#btn-back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+}
+
+#signInForm{
+    margin-top: 20px;
+    width: 500px;
+}
+
+.navbar{
+    background-color: #004C91 !important;
+}
+
+nav .nav-link, .navbar-brand{
+    color: white!important;
+}
+
+#categoryNav, #adminNav{
+    margin-top: 50px;
+}
+
+.btn-group button{
+    margin: 5px;
+}
+
+.is-favorite{
+    color: #ffd042 !important;
+}
+
+.not-favorite{
+    color: #bcbcbc !important;
+}
