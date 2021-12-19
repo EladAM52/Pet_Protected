@@ -222,3 +222,22 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
+
+    
+    $scope.onSelectFile = function ($files) {
+        for (var i = 0; i < $files.length; i++) {
+            var $file = $files[i];
+            debugger;
+            $upload.upload({
+                url: 'api/HomeControler/upload',
+                file: $file,
+                progress: function (e) {
+                    // wait...
+                }
+            })
+                .then(function (data, status, headers, config) {
+                    alert('file is uploaded successfully');
+                });
+        }
+        alert('file is uploaded successfully');
+    }
