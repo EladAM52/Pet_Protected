@@ -279,3 +279,8 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
+    
+        $scope.edit = function (post) {
+        $scope.postToEdit = {...post};
+        $scope.postToEdit['category'] = post['category__title']
+    }
