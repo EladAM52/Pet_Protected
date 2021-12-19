@@ -253,3 +253,32 @@ def delete_post(request, pk):
             },
             status=404
         )
+
+    
+@login_required
+@require_POST
+def add_to_favorite(request):
+    request_body = json.loads(request.body)
+    post_id = request_body.get('post_id')
+
+    if not post_id:
+        return JsonResponse(data={'message': "Post id cannot be blank"}, status=400)
+    else:
+        try:
+            post = Post.objects.get(id=post_id)
+        except ObjectDoesNotExist:
+            return JsonResponse(data={'message': "Post not found"}, status=404)
+
+    try:
+        favorite, created = Favorite.objects.get_or_create(
+            user=request.user,
+            post=post
+        )
+
+        if not created:
+            favorite.delete()
+
+        return JsonResponse(data={'success': True}, status=201)
+    except Exception as e:
+        print(e)
+        return JsonResponse(data={'message': "Failed to add post to favorite"}, status=500)
