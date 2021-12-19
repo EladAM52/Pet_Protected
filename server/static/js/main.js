@@ -51,4 +51,13 @@ app.controller("registerCtrl", function ($scope, $http, $window) {
         });
     }
 });
-
+$scope.getUsers = function () {
+        $http({
+            method: 'GET',
+            url: '/accounts/get_users',
+        }).then(function successCallback(response) {
+            $scope.users = response.data.users
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
