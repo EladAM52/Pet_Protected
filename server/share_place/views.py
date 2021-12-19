@@ -50,5 +50,9 @@ def get_stats(request):
             "amount_reviews": Review.objects.all().count()
         }
     )
+def get_categories(request):
+    return JsonResponse(data={
+        "categories": list(Category.objects.values_list('title', flat=True))
+    })
 
 
