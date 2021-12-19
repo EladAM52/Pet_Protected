@@ -127,3 +127,24 @@ def create_post(request):
     except Exception as e:
         print(e)
         return JsonResponse(data={'message': "Failed to create post"}, status=500)
+@require_POST
+def create_review(request):
+    request_body = json.loads(request.body)
+
+    Fullname = request_body.get('Fullname')
+    title = request_body.get('title')
+    description = request_body.get('description')
+    email = request_body.get('email')
+
+    try:
+        Review.objects.create(
+            Fullname=Fullname,
+            title=title,
+            description=description,
+            email=email
+
+        )
+        return JsonResponse(data={'success': True}, status=201)
+    except Exception as e:
+        print(e)
+        return JsonResponse(data={'message': "Failed to create Review"}, status=500)
