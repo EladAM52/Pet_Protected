@@ -208,4 +208,45 @@
             </div>
         </div>
     </div>
+    
+        <!-- Show posts Modal -->
+    <div class="container-fluid" id="postsContainer" style="margin-top: 20px; width:100%">
+        <div class="row">
+            <div class="card"
+                 style="width: 20rem; margin: 10px"
+                 ng-repeat="post in posts | filter: search">
+                <a href="" ng-click="addToFavorite(post.id)" ng-if="isAuthenticated">
+                    <i class="bi bi-star-fill fa-lg"
+                       ng-class="{'is-favorite': post.is_favorite, 'not-favorite': !post.is_favorite}"
+                       style="position: absolute;"></i>
+                </a>
+                <img ng-if="post.image" src="{{ MEDIA_URL }}/{[{ post.image }]}" class="card-img-top" alt="...">
+                <img ng-if="!post.image" src="{{ MEDIA_URL }}/post_images/default_post.png" class="card-img-top"
+                     alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{[{ post.title }]}</h5>
+                    <p class="card-text">creator - {[{ post.author__username }]}</p>
+                    <p class="card-text">{[{ post.description }]}</p>
+                    <p class="card-text">Date - {[{ post.created_at | date:'medium' }]}</p>
+                    <p class="card-text">Category - {[{ post.category__title }]}</p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPostModal"
+                            ng-click="edit(post)"
+                            ng-disabled="post.author__username !== username">
+                        Edit
+                    </button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactsModal"
+                            ng-click="showContacts(post)">
+                        Show contacts
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                            ng-click="deletePosts(post.id)"
+                            ng-disabled="post.author__username !== username && !isSuperuser">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
