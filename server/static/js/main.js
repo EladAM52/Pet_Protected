@@ -16,3 +16,20 @@ app.controller("navbarCtrl", function ($scope, $http, $window) {
     $scope.isSuperuser = global.isSuperuser;
 });
 
+app.controller("loginCtrl", function ($scope, $http, $window) {
+    $scope.data = {};
+    $scope.error = '';
+
+    $scope.submit = function () {
+        $scope.error = '';
+        $http({
+            method: 'POST',
+            url: '/accounts/login',
+            data: $scope.data
+        }).then(function successCallback(response) {
+            $window.location.href = '/'; // redirect to home page
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
+});
