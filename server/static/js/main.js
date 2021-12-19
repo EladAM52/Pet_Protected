@@ -109,3 +109,11 @@ app.controller("managementCtrl", function ($scope, $http, $window) {
         $scope.getReview();
         $scope.getStats();
     });
+
+app.controller("homeCtrl", function ($scope, $http) {
+    $scope.isAuthenticated = global.isAuthenticated;
+    $scope.username = global.username;
+    $scope.categories = [];
+    $scope.postData = {};
+    $scope.reviewData = {};
+
