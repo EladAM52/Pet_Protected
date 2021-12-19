@@ -126,3 +126,5 @@ app.controller("homeCtrl", function ($scope, $http) {
     $scope.profileData= {};
     $scope.profileToEdit = {};
     $scope.postToShowContacts = {};
+    $scope.isSuperuser = global.isSuperuser;
+    $scope.search = '';
