@@ -170,3 +170,9 @@ app.controller("homeCtrl", function ($scope, $http) {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
+
+
+    $scope.toggleShowMyPosts = function () {
+        $scope.showMyPosts = !$scope.showMyPosts;
+        $scope.getPosts();
+    }
