@@ -201,3 +201,14 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
+    $scope.getPosts = function () {
+        let params = {}
+        if ($scope.currentCategory) {
+            params['category'] = $scope.currentCategory
+        }
+        if ($scope.showMyPosts) {
+            params['author__id'] = global.userId
+        }
+        if ($scope.showFavorites) {
+            params['is_favorite'] = true
+        }
