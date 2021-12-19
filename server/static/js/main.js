@@ -116,4 +116,9 @@ app.controller("homeCtrl", function ($scope, $http) {
     $scope.categories = [];
     $scope.postData = {};
     $scope.reviewData = {};
-
+    $scope.uploadedImage = undefined;
+    $scope.error = '';
+    $scope.posts = [];
+    $scope.currentCategory = '';
+    $scope.showMyPosts = false;
+    $scope.showFavorites = false;
