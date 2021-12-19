@@ -33,9 +33,4 @@ class Review(models.Model):
         return self.title
 
 
-class Favorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = (('user', 'post'),)
