@@ -191,3 +191,13 @@ app.controller("homeCtrl", function ($scope, $http) {
         }
         $scope.getPosts();
     }
+    $scope.getCategories = function () {
+        $http({
+            method: 'GET',
+            url: '/get_categories',
+        }).then(function successCallback(response) {
+            $scope.categories = response.data.categories
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
