@@ -105,4 +105,7 @@ app.controller("managementCtrl", function ($scope, $http, $window) {
             $scope.error = response.data.message
         });
     }
-    
+        $scope.getUsers();
+        $scope.getReview();
+        $scope.getStats();
+    });
