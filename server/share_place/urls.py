@@ -7,5 +7,8 @@ urlpatterns = [
     path('login', login_page, name='login_page'),
     path('register', register_page, name='register_page'),
     path('management', management_page, name='management_page'),
+    path('get_categories', get_categories, name='get_categories'),
+    path('get_posts', get_posts, name='get_posts'),
+    path('create_post', create_post, name='create_post'),
 
 ]
