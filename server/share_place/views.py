@@ -6,6 +6,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_POST, require_http_methods
+from django.contrib.auth import login
 
 
 def home_page(request):
@@ -50,6 +51,8 @@ def get_stats(request):
             "amount_reviews": Review.objects.all().count()
         }
     )
+
+
 def get_categories(request):
     return JsonResponse(data={
         "categories": list(Category.objects.values_list('title', flat=True))
@@ -100,6 +103,7 @@ def get_reviews(request):
         )
     })
 
+
 @require_POST
 def create_post(request):
     if not request.user.is_authenticated:
@@ -127,8 +131,8 @@ def create_post(request):
     except Exception as e:
         print(e)
         return JsonResponse(data={'message': "Failed to create post"}, status=500)
-    
-    
+
+
 @require_POST
 def create_review(request):
     request_body = json.loads(request.body)
@@ -150,8 +154,9 @@ def create_review(request):
     except Exception as e:
         print(e)
         return JsonResponse(data={'message': "Failed to create Review"}, status=500)
-    
-    @require_POST
+
+
+@require_POST
 def edit_post(request, pk):
     if not request.user.is_authenticated:
         return JsonResponse(data={'message': "Unauthorized"}, status=401)
@@ -190,38 +195,38 @@ def edit_post(request, pk):
             status=404
         )
 
-    
-    @require_POST
-def edit_post(request, pk):
+@login_required
+@require_POST
+def edit_profile(request):
     if not request.user.is_authenticated:
         return JsonResponse(data={'message': "Unauthorized"}, status=401)
 
     try:
-        post = Post.objects.get(id=pk)
-        if post.author != request.user:
-            return JsonResponse(
-                data={"message": "Not permitted"},
-                status=401
-            )
+        user = request.user
 
         request_body = json.loads(request.POST['data'])
-        image = None
 
-        if len(request.FILES) > 0:
-            image = request.FILES['file']
+        first_name = request_body.get('first_name')
+        last_name = request_body.get('last_name')
+        phone_number = request_body.get('phone_number')
+        email = request_body.get('email')
+        password = request_body.get('password')
 
-        title = request_body.get('title')
-        description = request_body.get('description')
-        category = request_body.get('category')
+        if first_name:
+            user.first_name = first_name
 
-        post.title = title
-        post.description = description
-        post.category = Category.objects.get(title=category)
+        if last_name:
+            user.last_name = last_name
+        if phone_number:
+            user.profile.phone_number = phone_number
 
-        if image:
-            post.image = image
+        if email:
+            user.email = email
 
-        post.save()
+        if password:
+            user.set_password(password)
+            login(request, user=request.user)
+        user.save()
 
         return JsonResponse(data={'success': True}, status=201)
     except ObjectDoesNotExist:
@@ -229,7 +234,8 @@ def edit_post(request, pk):
             data={"message": "Post not found"},
             status=404
         )
-    
+
+
 @require_http_methods(['DELETE'])
 @login_required
 def delete_post(request, pk):
@@ -254,7 +260,7 @@ def delete_post(request, pk):
             status=404
         )
 
-    
+
 @login_required
 @require_POST
 def add_to_favorite(request):
@@ -282,3 +288,4 @@ def add_to_favorite(request):
     except Exception as e:
         print(e)
         return JsonResponse(data={'message': "Failed to add post to favorite"}, status=500)
+
