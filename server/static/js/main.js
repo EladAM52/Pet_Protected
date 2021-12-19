@@ -326,3 +326,21 @@ app.controller("homeCtrl", function ($scope, $http) {
         });
     }
 
+    
+        $scope.editProfile = function () {
+        var fd = new FormData();
+        fd.append('data', angular.toJson($scope.profileToEdit));
+
+        return $http.post('edit_profile/' + $scope.profileToEdit.id, fd, {
+            transformRequest: angular.identity,
+            headers: {
+                'Content-Type': undefined
+            }
+        }).then(function successCallback(response) {
+            $('#editProfileModal').modal('hide');
+            $scope.profileToEdit = {};
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
+});
