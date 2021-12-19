@@ -241,3 +241,24 @@ app.controller("homeCtrl", function ($scope, $http) {
         }
         alert('file is uploaded successfully');
     }
+
+    $scope.createPost = function () {
+        var fd = new FormData();
+        fd.append('data', angular.toJson($scope.postData));
+        if ($scope.file) {
+            fd.append("file", $scope.file, $scope.file.name);
+        }
+        return $http.post('create_post', fd, {
+            transformRequest: angular.identity,
+            headers: {
+                'Content-Type': undefined
+            }
+        }).then(function successCallback(response) {
+            console.log(response)
+            $('#addPostModal').modal('hide');
+            $scope.postData = {};
+            $scope.getPosts();
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
