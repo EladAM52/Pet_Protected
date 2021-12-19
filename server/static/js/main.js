@@ -347,3 +347,40 @@ app.directive('file', function () {
         }
     };
 });
+
+ $scope.editProfile = function () {
+        var fd = new FormData();
+        fd.append('data', angular.toJson($scope.profileToEdit));
+
+        return $http.post('edit_profile', fd, {
+            transformRequest: angular.identity,
+            headers: {
+                'Content-Type': undefined
+            }
+        }).then(function successCallback(response) {
+            $('#editProfileModal').modal('hide');
+            $scope.profileToEdit = {};
+            location.reload();
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
+});
+
+
+
+
+app.directive('file', function () {
+    return {
+        scope: {
+            file: '='
+        },
+        link: function (scope, el, attrs) {
+            el.bind('change', function (event) {
+                var file = event.target.files[0];
+                scope.file = file ? file : undefined;
+                scope.$apply();
+            });
+        }
+    };
+});
