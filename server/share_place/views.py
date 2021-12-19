@@ -56,3 +56,35 @@ def get_categories(request):
     })
 
 
+def get_posts(request):
+    category = request.GET.get('category')
+    author_id = request.GET.get('author__id')
+    is_favorite = request.GET.get('is_favorite')
+    queryset = Post.objects.all()
+
+    if category:
+        queryset = queryset.filter(category__title=category)
+
+    if author_id:
+        queryset = queryset.filter(author__id=author_id)
+
+    post_list = []
+
+    queryset_list = list(queryset.values(
+        'id', 'title', 'description', 'category', 'category__title', 'created_at', 'image',
+        'author_id', 'author__username', 'author__first_name', 'author__last_name', 'author__profile__phone_number'
+    ))
+
+    for post in queryset_list:
+        post['is_favorite'] = Favorite.objects.filter(user=request.user, post_id=post['id']).exists()  # true or false
+        if is_favorite:  # user ask favorite
+            # add to list if is favorite
+            if post['is_favorite']:
+                post_list.append(post)
+        else:
+            post_list.append(post)
+
+    return JsonResponse(data={
+        "posts": post_list
+    })
+
