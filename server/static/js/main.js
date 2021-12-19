@@ -128,3 +128,17 @@ app.controller("homeCtrl", function ($scope, $http) {
     $scope.postToShowContacts = {};
     $scope.isSuperuser = global.isSuperuser;
     $scope.search = '';
+
+    $scope.addToFavorite = function (post_id) {
+        $http({
+            method: 'POST',
+            url: '/add_to_favorite',
+            data: {
+                post_id: post_id
+            }
+        }).then(function successCallback(response) {
+            $scope.getPosts();
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
