@@ -310,3 +310,7 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
+    
+    
+    $scope.getCategories();
+    $scope.getPosts();
