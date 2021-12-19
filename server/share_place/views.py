@@ -229,3 +229,27 @@ def edit_post(request, pk):
             data={"message": "Post not found"},
             status=404
         )
+    
+@require_http_methods(['DELETE'])
+@login_required
+def delete_post(request, pk):
+    try:
+        post = Post.objects.get(id=pk)
+        if post.author != request.user and not request.user.is_superuser:
+            return JsonResponse(
+                data={"message": "Not permitted"},
+                status=401
+            )
+        post.delete()
+        return JsonResponse(
+            data={
+                "success": True
+            }
+        )
+    except ObjectDoesNotExist:
+        return JsonResponse(
+            data={
+                "message": "Post not found"
+            },
+            status=404
+        )
