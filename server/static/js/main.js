@@ -181,3 +181,13 @@ app.controller("homeCtrl", function ($scope, $http) {
         $scope.showFavorites = !$scope.showFavorites;
         $scope.getPosts();
     }
+    
+    
+    $scope.setCurrentCategory = function (category) {
+        if ($scope.currentCategory === category) {
+            $scope.currentCategory = '';
+        } else {
+            $scope.currentCategory = category;
+        }
+        $scope.getPosts();
+    }
