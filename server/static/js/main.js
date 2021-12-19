@@ -92,3 +92,17 @@ app.controller("managementCtrl", function ($scope, $http, $window) {
             $scope.error = response.data.message
         });
     }
+    
+        $scope.getStats = function () {
+        $http({
+            method: 'GET',
+            url: '/get_stats',
+        }).then(function successCallback(response) {
+            $scope.amountUsers = response.data.amount_users;
+            $scope.amountPosts = response.data.amount_posts;
+            $scope.amountReviews = response.data.amount_reviews;
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
+    
