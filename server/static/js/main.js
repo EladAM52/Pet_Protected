@@ -51,6 +51,7 @@ app.controller("registerCtrl", function ($scope, $http, $window) {
         });
     }
 });
+
 app.controller("managementCtrl", function ($scope, $http, $window) {
     $scope.users = [];
     $scope.error = "";
