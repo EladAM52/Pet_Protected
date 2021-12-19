@@ -10,5 +10,8 @@ urlpatterns = [
     path('get_categories', get_categories, name='get_categories'),
     path('get_posts', get_posts, name='get_posts'),
     path('create_post', create_post, name='create_post'),
+    path('get_stats', get_stats, name='get_stats'),
+    path('edit_post/<int:pk>', edit_post, name='edit_post'),
+    path('delete_post/<int:pk>', delete_post, name='delete_post'),
 
 ]
