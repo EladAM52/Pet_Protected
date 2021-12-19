@@ -212,3 +212,13 @@ app.controller("homeCtrl", function ($scope, $http) {
         if ($scope.showFavorites) {
             params['is_favorite'] = true
         }
+        $http({
+            method: 'GET',
+            url: '/get_posts',
+            params: params
+        }).then(function successCallback(response) {
+            $scope.posts = response.data.posts
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
