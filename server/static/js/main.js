@@ -288,3 +288,25 @@ app.controller("homeCtrl", function ($scope, $http) {
         $scope.showContacts = function (post) {
         $scope.postToShowContacts = {...post};
     }
+    
+    
+    $scope.editPost = function () {
+        var fd = new FormData();
+        fd.append('data', angular.toJson($scope.postToEdit));
+        if ($scope.file) {
+            fd.append("file", $scope.file, $scope.file.name);
+        }
+
+        return $http.post('edit_post/' + $scope.postToEdit.id, fd, {
+            transformRequest: angular.identity,
+            headers: {
+                'Content-Type': undefined
+            }
+        }).then(function successCallback(response) {
+            $('#editPostModal').modal('hide');
+            $scope.postToEdit = {};
+            $scope.getPosts();
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
