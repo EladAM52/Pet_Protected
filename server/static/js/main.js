@@ -176,3 +176,8 @@ app.controller("homeCtrl", function ($scope, $http) {
         $scope.showMyPosts = !$scope.showMyPosts;
         $scope.getPosts();
     }
+    
+    $scope.toggleShowFavorites = function () {
+        $scope.showFavorites = !$scope.showFavorites;
+        $scope.getPosts();
+    }
