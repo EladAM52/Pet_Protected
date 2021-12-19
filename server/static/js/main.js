@@ -58,3 +58,13 @@ app.controller("managementCtrl", function ($scope, $http, $window) {
     $scope.amountPosts = 0;
     $scope.amountReviews = 0;
 }
+               $scope.getUsers = function () {
+        $http({
+            method: 'GET',
+            url: '/accounts/get_users',
+        }).then(function successCallback(response) {
+            $scope.users = response.data.users
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
