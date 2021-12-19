@@ -127,6 +127,8 @@ def create_post(request):
     except Exception as e:
         print(e)
         return JsonResponse(data={'message': "Failed to create post"}, status=500)
+    
+    
 @require_POST
 def create_review(request):
     request_body = json.loads(request.body)
@@ -148,6 +150,46 @@ def create_review(request):
     except Exception as e:
         print(e)
         return JsonResponse(data={'message': "Failed to create Review"}, status=500)
+    
+    @require_POST
+def edit_post(request, pk):
+    if not request.user.is_authenticated:
+        return JsonResponse(data={'message': "Unauthorized"}, status=401)
+
+    try:
+        post = Post.objects.get(id=pk)
+        if post.author != request.user:
+            return JsonResponse(
+                data={"message": "Not permitted"},
+                status=401
+            )
+
+        request_body = json.loads(request.POST['data'])
+        image = None
+
+        if len(request.FILES) > 0:
+            image = request.FILES['file']
+
+        title = request_body.get('title')
+        description = request_body.get('description')
+        category = request_body.get('category')
+
+        post.title = title
+        post.description = description
+        post.category = Category.objects.get(title=category)
+
+        if image:
+            post.image = image
+
+        post.save()
+
+        return JsonResponse(data={'success': True}, status=201)
+    except ObjectDoesNotExist:
+        return JsonResponse(
+            data={"message": "Post not found"},
+            status=404
+        )
+
     
     @require_POST
 def edit_post(request, pk):
