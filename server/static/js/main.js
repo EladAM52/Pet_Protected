@@ -122,3 +122,7 @@ app.controller("homeCtrl", function ($scope, $http) {
     $scope.currentCategory = '';
     $scope.showMyPosts = false;
     $scope.showFavorites = false;
+    $scope.postToEdit = {};
+    $scope.profileData= {};
+    $scope.profileToEdit = {};
+    $scope.postToShowContacts = {};
