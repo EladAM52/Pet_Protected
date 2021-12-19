@@ -314,3 +314,15 @@ app.controller("homeCtrl", function ($scope, $http) {
     
     $scope.getCategories();
     $scope.getPosts();
+    
+    $scope.deletePosts = function (post_id) {
+        $http({
+            method: 'DELETE',
+            url: '/delete_post/' + post_id,
+        }).then(function successCallback(response) {
+            $scope.getPosts();
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
+
