@@ -13,5 +13,9 @@ urlpatterns = [
     path('get_stats', get_stats, name='get_stats'),
     path('edit_post/<int:pk>', edit_post, name='edit_post'),
     path('delete_post/<int:pk>', delete_post, name='delete_post'),
+    path('create_review', create_review, name='create_review'),
+    path('get_reviews', get_reviews, name='get_reviews'),
+    path('profile', profile_page, name='profile_page'),
+    path('add_to_favorite', add_to_favorite, name='add_to_favorite'),
 
 ]
