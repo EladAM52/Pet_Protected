@@ -262,3 +262,20 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
+
+    
+    $scope.createReview = function () {
+        $scope.error = '';
+        $http({
+            method: 'POST',
+            url: '/create_review',
+            data: $scope.reviewData
+        }).then(function successCallback(response) {
+            console.log(response)
+            $('#addReviewModal').modal('hide');
+            $scope.reviewData = {};
+            $scope.getReview();
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
