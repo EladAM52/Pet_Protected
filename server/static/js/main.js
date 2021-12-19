@@ -79,4 +79,16 @@ app.controller("managementCtrl", function ($scope, $http, $window) {
         });
     }
     
-    
+    $scope.deleteUser = function (userId) {
+        $http({
+            method: 'DELETE',
+            url: '/accounts/delete_user',
+            params: {
+                user_id: userId
+            }
+        }).then(function successCallback(response) {
+            $scope.getUsers();
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
