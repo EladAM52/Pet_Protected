@@ -58,17 +58,17 @@ app.controller("managementCtrl", function ($scope, $http, $window) {
     $scope.amountUsers = 0;
     $scope.amountPosts = 0;
     $scope.amountReviews = 0;
+
     $scope.getUsers = function () {
-            $http({
-                method: 'GET',
-                url: '/accounts/get_users',
-            }).then(function successCallback(response) {
-                $scope.users = response.data.users
-            }, function errorCallback(response) {
-                $scope.error = response.data.message
-            });
+        $http({
+            method: 'GET',
+            url: '/accounts/get_users',
+        }).then(function successCallback(response) {
+            $scope.users = response.data.users
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
     }
-    
     $scope.getReview = function () {
         $http({
             method: 'GET',
@@ -79,7 +79,6 @@ app.controller("managementCtrl", function ($scope, $http, $window) {
             $scope.error = response.data.message
         });
     }
-    
     $scope.deleteUser = function (userId) {
         $http({
             method: 'DELETE',
@@ -93,8 +92,7 @@ app.controller("managementCtrl", function ($scope, $http, $window) {
             $scope.error = response.data.message
         });
     }
-    
-        $scope.getStats = function () {
+    $scope.getStats = function () {
         $http({
             method: 'GET',
             url: '/get_stats',
@@ -106,10 +104,12 @@ app.controller("managementCtrl", function ($scope, $http, $window) {
             $scope.error = response.data.message
         });
     }
-        $scope.getUsers();
-        $scope.getReview();
-        $scope.getStats();
-    });
+
+    $scope.getUsers();
+    $scope.getReview();
+    $scope.getStats();
+});
+
 
 app.controller("homeCtrl", function ($scope, $http) {
     $scope.isAuthenticated = global.isAuthenticated;
@@ -124,7 +124,6 @@ app.controller("homeCtrl", function ($scope, $http) {
     $scope.showMyPosts = false;
     $scope.showFavorites = false;
     $scope.postToEdit = {};
-    $scope.profileData= {};
     $scope.profileToEdit = {};
     $scope.postToShowContacts = {};
     $scope.isSuperuser = global.isSuperuser;
@@ -143,17 +142,16 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
-    
-     //Get the button
+
+    //Get the button
     let mybutton = document.getElementById("btn-back-to-top");
 
     // When the user scrolls down 20px from the top of the document, show the button
     window.onscroll = function () {
         scrollFunction();
     };
-    
-   
-        function scrollFunction() {
+
+    function scrollFunction() {
         if (
             document.body.scrollTop > 20 ||
             document.documentElement.scrollTop > 20
@@ -172,18 +170,14 @@ app.controller("homeCtrl", function ($scope, $http) {
         document.documentElement.scrollTop = 0;
     }
 
-
     $scope.toggleShowMyPosts = function () {
         $scope.showMyPosts = !$scope.showMyPosts;
         $scope.getPosts();
     }
-    
     $scope.toggleShowFavorites = function () {
         $scope.showFavorites = !$scope.showFavorites;
         $scope.getPosts();
     }
-    
-    
     $scope.setCurrentCategory = function (category) {
         if ($scope.currentCategory === category) {
             $scope.currentCategory = '';
@@ -223,8 +217,6 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
-
-    
     $scope.onSelectFile = function ($files) {
         for (var i = 0; i < $files.length; i++) {
             var $file = $files[i];
@@ -242,7 +234,6 @@ app.controller("homeCtrl", function ($scope, $http) {
         }
         alert('file is uploaded successfully');
     }
-
     $scope.createPost = function () {
         var fd = new FormData();
         fd.append('data', angular.toJson($scope.postData));
@@ -263,8 +254,6 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
-
-    
     $scope.createReview = function () {
         $scope.error = '';
         $http({
@@ -280,17 +269,14 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
-    
-        $scope.edit = function (post) {
+
+    $scope.edit = function (post) {
         $scope.postToEdit = {...post};
         $scope.postToEdit['category'] = post['category__title']
     }
-    
-        $scope.showContacts = function (post) {
+    $scope.showContacts = function (post) {
         $scope.postToShowContacts = {...post};
     }
-    
-    
     $scope.editPost = function () {
         var fd = new FormData();
         fd.append('data', angular.toJson($scope.postToEdit));
@@ -311,11 +297,9 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
-    
-    
     $scope.getCategories();
     $scope.getPosts();
-    
+
     $scope.deletePosts = function (post_id) {
         $http({
             method: 'DELETE',
@@ -327,12 +311,11 @@ app.controller("homeCtrl", function ($scope, $http) {
         });
     }
 
-    
-        $scope.editProfile = function () {
+    $scope.editProfile = function () {
         var fd = new FormData();
         fd.append('data', angular.toJson($scope.profileToEdit));
 
-        return $http.post('edit_profile/' + $scope.profileToEdit.id, fd, {
+        return $http.post('edit_profile', fd, {
             transformRequest: angular.identity,
             headers: {
                 'Content-Type': undefined
@@ -340,6 +323,7 @@ app.controller("homeCtrl", function ($scope, $http) {
         }).then(function successCallback(response) {
             $('#editProfileModal').modal('hide');
             $scope.profileToEdit = {};
+            location.reload();
         }, function errorCallback(response) {
             $scope.error = response.data.message
         });
