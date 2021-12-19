@@ -87,4 +87,13 @@ def get_posts(request):
     return JsonResponse(data={
         "posts": post_list
     })
+def get_reviews(request):
+    queryset = Review.objects.all()
 
+    return JsonResponse(data={
+        "reviews": list(
+            queryset.values(
+                'id', 'Fullname', 'title', 'description', 'email'
+            )
+        )
+    })
