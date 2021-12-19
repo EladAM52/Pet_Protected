@@ -284,3 +284,7 @@ app.controller("homeCtrl", function ($scope, $http) {
         $scope.postToEdit = {...post};
         $scope.postToEdit['category'] = post['category__title']
     }
+    
+        $scope.showContacts = function (post) {
+        $scope.postToShowContacts = {...post};
+    }
