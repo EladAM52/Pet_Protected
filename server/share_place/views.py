@@ -107,7 +107,9 @@ def get_posts(request):
     ))
 
     for post in queryset_list:
-        post['is_favorite'] = Favorite.objects.filter(user=request.user, post_id=post['id']).exists()  # true or false
+        post["is_favorite"] = False
+        if request.user.is_authenticated:
+            post['is_favorite'] = Favorite.objects.filter(user=request.user, post_id=post['id']).exists()  # true or false
         if is_favorite:  # user ask favorite
             # add to list if is favorite
             if post['is_favorite']:
