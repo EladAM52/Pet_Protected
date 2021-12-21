@@ -196,4 +196,20 @@ body{
     box-shadow: none!important;
 }
 
+.body-background{
+    background-color: black !important;
+
+}
+
+.body-text-size{
+    font-size: 150% !important;
+}
+
+.body-text-color{
+    color: red !important;
+}
+
+.body-text-shadow{
+    text-shadow: 0 0 3px #FF0000 !important;
+}
 
