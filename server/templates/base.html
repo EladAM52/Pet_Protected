@@ -43,13 +43,65 @@
     <title>Title</title>
 </head>
 <body>
+<script>
+        function changeBackground() {
+           body = document.getElementsByClassName('body-background')
+           if (body.length > 0){
+                body[0].classList.remove("body-background")
+           } else {
+                body = document.getElementsByTagName('body')[0]
+                body.classList.add("body-background")
+           }
+        }
+        function changeTextSize() {
+           body = document.getElementsByClassName('body-text-size')
+           if (body.length > 0){
+                body[0].classList.remove("body-text-size")
+           } else {
+                body = document.getElementsByTagName('body')[0]
+                body.classList.add("body-text-size")
+           }
+        }
+        function changeTextColor() {
+           body = document.getElementsByClassName('body-text-color')
+           if (body.length > 0){
+                body[0].classList.remove("body-text-color")
+           } else {
+                body = document.getElementsByTagName('body')[0]
+                body.classList.add("body-text-color")
+           }
+        }
+        function changeTextShadow() {
+           body = document.getElementsByClassName('body-text-shadow')
+           if (body.length > 0){
+                body[0].classList.remove("body-text-shadow")
+           } else {
+                body = document.getElementsByTagName('body')[0]
+                body.classList.add("body-text-shadow")
+           }
+        }
+
+</script>
 {% csrf_token %}
 
 <div ng-app="myApp">
     {% include 'navbar.html' %}
+    <div class="btn-group">
+        <div class="btn-group">
+            <button type="button" class="btn-hover color-9" data-toggle="dropdown" style="margin-top: 25px; width: 100px;">
+                <i class='fas fa-wheelchair' style='font-size:36px;color:black'></i> <span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu" style="background-color: #e2e8f0">
+                <li><button type=button" class="btn-hover color-9" class="dropdown-item" onclick="changeBackground()">Background Color</button></li>
+                <li><button type=button" class="btn-hover color-9" class="dropdown-item" onclick="changeTextSize()">Text Size</button></li>
+                <li><button type=button" class="btn-hover color-9" class="dropdown-item" onclick="changeTextColor()">Text Color </button></li>
+                <li><button type=button" class="btn-hover color-9" class="dropdown-item" onclick="changeTextShadow()">Text Shadow </button></li>
+            </ul>
+        </div>
+    </div>
     {% block content %}
     {% endblock %}
 </div>
+	
 <!-- Back to top button -->
 <button
         type="button"
