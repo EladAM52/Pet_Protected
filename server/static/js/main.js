@@ -328,38 +328,18 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
-});
-
-
-
-
-app.directive('file', function () {
-    return {
-        scope: {
-            file: '='
-        },
-        link: function (scope, el, attrs) {
-            el.bind('change', function (event) {
-                var file = event.target.files[0];
-                scope.file = file ? file : undefined;
-                scope.$apply();
-            });
-        }
-    };
-});
-
- $scope.editProfile = function () {
+     $scope.changePassword = function () {
         var fd = new FormData();
-        fd.append('data', angular.toJson($scope.profileToEdit));
+        fd.append('data', angular.toJson($scope.passwordToEdit));
 
-        return $http.post('edit_profile', fd, {
+        return $http.post('change_password', fd, {
             transformRequest: angular.identity,
             headers: {
                 'Content-Type': undefined
             }
         }).then(function successCallback(response) {
-            $('#editProfileModal').modal('hide');
-            $scope.profileToEdit = {};
+            $('#changePasswordModal').modal('hide');
+            $scope.passwordToEdit = {};
             location.reload();
         }, function errorCallback(response) {
             $scope.error = response.data.message
@@ -384,3 +364,5 @@ app.directive('file', function () {
         }
     };
 });
+
+ 
