@@ -12,6 +12,8 @@ from django.contrib.auth import login
 def home_page(request):
     return render(request, 'home.html')
 
+def about_us_page(request):
+    return render(request, 'about_us.html')
 
 def login_page(request):
     if request.user.is_authenticated:
