@@ -20,7 +20,7 @@
                            placeholder="Password"
                            ng-required="true">
                 </div>
-                <div ng-if="error">{[{error}]}</div>
+                <div ng-if="error" class="alert alert-danger" role="alert">{[{error}]}</div>
                 <button class="btn btn-primary" ng-click="submit()">Submit</button>
             </form>
             <a href="/register">New user? create an account</a>
