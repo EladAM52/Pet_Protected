@@ -124,6 +124,7 @@ app.controller("homeCtrl", function ($scope, $http) {
     $scope.showMyPosts = false;
     $scope.showFavorites = false;
     $scope.postToEdit = {};
+    $scope.passwordToEdit = {};
     $scope.profileToEdit = {};
     $scope.postToShowContacts = {};
     $scope.isSuperuser = global.isSuperuser;
