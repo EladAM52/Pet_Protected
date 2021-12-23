@@ -18,12 +18,14 @@
                     <span><i class="fab fa-facebook-f"></i></span>
                 </div>
 
-                <div class="icon instagram"  onclick="window.open('https://www.instagram.com/pet_protected/', '_blank'); return false;"
+                <div class="icon instagram"
+                     onclick="window.open('https://www.instagram.com/pet_protected/', '_blank'); return false;"
                 >
                     <div class="tooltip">Instagram</div>
                     <span><i class="fab fa-instagram"></i></span>
                 </div>
-                <div class="icon github" onclick="window.open('https://github.com/EladAM52/Pet_Protected', '_blank'); return false;">
+                <div class="icon github"
+                     onclick="window.open('https://github.com/EladAM52/Pet_Protected', '_blank'); return false;">
                     <div class="tooltip">Github</div>
                     <span><i class="fab fa-github"></i></span>
                 </div>
@@ -208,8 +210,7 @@
             </div>
         </div>
     </div>
-    
-        <!-- Show posts Modal -->
+    <!-- Show posts Modal -->
     <div class="container-fluid" id="postsContainer" style="margin-top: 20px; width:100%">
         <div class="row">
             <div class="card"
@@ -238,7 +239,7 @@
                             ng-click="showContacts(post)">
                         Show contacts
                     </button>
-                    <button type="button" class="btn btn-primary"
+                    <button type="button" class="btn btn-danger"
                             ng-click="deletePosts(post.id)"
                             ng-disabled="post.author__username !== username && !isSuperuser">
                         Delete
@@ -249,4 +250,3 @@
     </div>
 </div>
 {% endblock %}
-
