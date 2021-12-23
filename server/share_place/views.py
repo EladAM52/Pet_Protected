@@ -293,5 +293,30 @@ def add_to_favorite(request):
         return JsonResponse(data={'message': "Failed to add post to favorite"}, status=500)
 
 
+@login_required
+@require_POST
+def change_password(request):
+    if not request.user.is_authenticated:
+        return JsonResponse(data={'message': "Unauthorized"}, status=401)
 
+    try:
+        user = request.user
+        request_body = json.loads(request.POST['data'])
+        password = request_body.get('password')
+        password2 = request_body.get('password2')
+
+        if password == password2:
+            if password:
+                user.set_password(password)
+                login(request, user=request.user)
+            user.save()
+        else:
+            return JsonResponse(data={'message': "Unmatched Passwords"}, status=401)
+
+        return JsonResponse(data={'success': True}, status=201)
+    except ObjectDoesNotExist:
+        return JsonResponse(
+            data={"message": "Post not found"},
+            status=404
+        )
 
