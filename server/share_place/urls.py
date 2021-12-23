@@ -18,6 +18,8 @@ urlpatterns = [
     path('profile', profile_page, name='profile_page'),
     path('add_to_favorite', add_to_favorite, name='add_to_favorite'),
     path('edit_profile', edit_profile, name='edit_profile'),
+    path('about_us', about_us_page, name='about_us_page'),
+    path('change_password', change_password, name='change_password'),
  
 
 ]
