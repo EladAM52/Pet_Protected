@@ -83,3 +83,20 @@ class SharePlaceViewTestCase(TestCase):
         self.assertDictEqual(response.json(), {
             'status': ['Like New', 'Good', 'Slightly damaged', 'Requires repair']
         })
+
+
+    def test_get_posts__by_category(self):
+        for category in Category.objects.all():
+            Post.objects.create(
+                author=self.user,
+                category=category,
+                title='post title',
+                description='desc',
+                status=Product.objects.get(title='Good')
+            )
+        response = self.client.get('/get_posts?category=Games', content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['posts']), 1)
+        expected_post = Post.objects.get(category__title='Games')
+        actual_post = response.json()['posts'][0]
+        self.assertEqual(expected_post.id, actual_post['id'])
