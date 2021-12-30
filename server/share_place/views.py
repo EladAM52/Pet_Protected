@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from .models import Category, Post, Review, Favorite
+from .models import Category, Post, Review, Favorite,Product
 from django.contrib.auth.models import User
 import json
 from django.contrib.auth.decorators import login_required
@@ -12,8 +12,10 @@ from django.contrib.auth import login
 def home_page(request):
     return render(request, 'home.html')
 
+
 def about_us_page(request):
     return render(request, 'about_us.html')
+
 
 def login_page(request):
     if request.user.is_authenticated:
@@ -31,7 +33,7 @@ def register_page(request):
 
 def profile_page(request):
     if request.user.is_authenticated:
-        return render(request, 'profile_page.html')
+        return render(request, 'profile_page.html', {'amount_posts': Post.objects.filter(author=request.user).count()})
 
     return redirect('home_page')
 
@@ -61,6 +63,12 @@ def get_categories(request):
     })
 
 
+def get_status(request):
+    return JsonResponse(data={
+        "status": list(Product.objects.values_list('title', flat=True))
+    })
+
+
 def get_posts(request):
     category = request.GET.get('category')
     author_id = request.GET.get('author__id')
@@ -77,7 +85,8 @@ def get_posts(request):
 
     queryset_list = list(queryset.values(
         'id', 'title', 'description', 'category', 'category__title', 'created_at', 'image',
-        'author_id', 'author__username', 'author__first_name', 'author__last_name', 'author__profile__phone_number'
+        'author_id', 'author__username', 'author__first_name', 'author__last_name', 'author__profile__phone_number',
+        'status__title'
     ))
 
     for post in queryset_list:
@@ -114,6 +123,7 @@ def create_post(request):
         return JsonResponse(data={'message': "Unauthorized"}, status=401)
 
     request_body = json.loads(request.POST['data'])
+
     image = None
 
     if len(request.FILES) > 0:
@@ -122,6 +132,7 @@ def create_post(request):
     title = request_body.get('title')
     description = request_body.get('description')
     category = request_body.get('category')
+    status = request_body.get('status')
 
     try:
         Post.objects.create(
@@ -129,7 +140,8 @@ def create_post(request):
             title=title,
             description=description,
             category=Category.objects.get(title=category),
-            image=image
+            image=image,
+            status=Product.objects.get(title=status)
         )
         return JsonResponse(data={'success': True}, status=201)
     except Exception as e:
@@ -182,10 +194,12 @@ def edit_post(request, pk):
         title = request_body.get('title')
         description = request_body.get('description')
         category = request_body.get('category')
+        status = request_body.get('status')
 
         post.title = title
         post.description = description
         post.category = Category.objects.get(title=category)
+        post.status = Product.objects.get(title=status)
 
         if image:
             post.image = image
@@ -199,17 +213,15 @@ def edit_post(request, pk):
             status=404
         )
 
+
 @login_required
 @require_POST
 def edit_profile(request):
     if not request.user.is_authenticated:
         return JsonResponse(data={'message': "Unauthorized"}, status=401)
-
     try:
         user = request.user
-
-        request_body = json.loads(request.POST['data'])
-
+        request_body = json.loads(request.body)
         first_name = request_body.get('first_name')
         last_name = request_body.get('last_name')
         phone_number = request_body.get('phone_number')
@@ -242,7 +254,6 @@ def edit_profile(request):
 
 @require_http_methods(['DELETE'])
 @login_required
-
 def delete_post(request, pk):
     try:
         post = Post.objects.get(id=pk)
@@ -303,7 +314,7 @@ def change_password(request):
 
     try:
         user = request.user
-        request_body = json.loads(request.POST['data'])
+        request_body = json.loads(request.body)
         password = request_body.get('password')
         password2 = request_body.get('password2')
 
@@ -321,4 +332,3 @@ def change_password(request):
             data={"message": "Post not found"},
             status=404
         )
-
