@@ -68,3 +68,13 @@ class AccountsViewTestCase(TestCase):
         response = self.client.post('/accounts/logout',
                                     content_type="application/json")
         self.assertEqual(response.status_code, 302)
+        
+        
+    def test_delete_user(self):
+        test_user = User.objects.create_user(username='test', password='password', last_name="last test",
+                                             first_name="first test", email="test@test.com")
+        self.client.login(username='admin', password='admin')
+        response = self.client.delete(path='/accounts/delete_user?user_id=' + str(test_user.id))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(User.objects.filter(username='test').exists())
+
