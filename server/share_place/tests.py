@@ -121,3 +121,31 @@ class SharePlaceViewTestCase(TestCase):
         expected_post = Post.objects.get(author=self.user)
         actual_post = response.json()['posts'][0]
         self.assertEqual(expected_post.id, actual_post['id'])
+
+    def test_get_posts__by_favorite(self):
+        post = Post.objects.create(
+            author=self.user,
+            category=Category.objects.get(title='Games'),
+            title='first',
+            description='desc',
+            status=Product.objects.get(title='Good')
+        )
+        Post.objects.create(
+            author=self.user,
+            category=Category.objects.get(title='Games'),
+            title='second',
+            description='desc',
+            status=Product.objects.get(title='Good')
+        )
+        Favorite.objects.create(
+            user=self.user,
+            post=post
+        )
+        # only authenticated user can ask favorite posts
+        self.client.login(username=self.user.username, password='password')
+        response = self.client.get('/get_posts?is_favorite=true', content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['posts']), 1)
+        actual_post = response.json()['posts'][0]
+        self.assertEqual(post.id, actual_post['id'])
+        self.assertTrue(actual_post['is_favorite'])
