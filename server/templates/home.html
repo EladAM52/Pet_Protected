@@ -225,11 +225,18 @@
                 <img ng-if="!post.image" src="{{ MEDIA_URL }}/post_images/default_post.png" class="card-img-top"
                      alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">{[{ post.title }]}</h5>
-                    <p class="card-text">creator - {[{ post.author__username }]}</p>
-                    <p class="card-text">{[{ post.description }]}</p>
-                    <p class="card-text">Date - {[{ post.created_at | date:'medium' }]}</p>
-                    <p class="card-text">Category - {[{ post.category__title }]}</p>
+                    <span style="line-height: 2.2">
+                        <h5 class="card-title" style="text-align: center; font-weight: bold;  font-size: 120%">{[{ post.title }]}</h5>
+                        <span for="title" style="font-weight: bold; ">Creator: </span>
+                        <span class="card-text"> {[{ post.author__username }]} </span><br>
+                        <span class="card-text">{[{ post.description }]}</span><br>
+                        <span for="title" style="font-weight: bold; ">Date: </span>
+                        <span class="card-text"> {[{ post.created_at | date:'medium' }]}</span><br>
+                        <span for="title" style="font-weight: bold; ">Category:</span>
+                        <span class="card-text">{[{ post.category__title }]}</span><br>
+                        <span for="title" style="font-weight: bold; ">Status:</span>
+                        <span class="card-text"> {[{ post.status__title }]}</span><br>
+                    </span>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPostModal"
                             ng-click="edit(post)"
                             ng-disabled="post.author__username !== username">
@@ -250,3 +257,4 @@
     </div>
 </div>
 {% endblock %}
+
