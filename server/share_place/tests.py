@@ -100,3 +100,24 @@ class SharePlaceViewTestCase(TestCase):
         expected_post = Post.objects.get(category__title='Games')
         actual_post = response.json()['posts'][0]
         self.assertEqual(expected_post.id, actual_post['id'])
+        
+        
+    def test_get_posts__by_author_id(self):
+        User.objects.create_user(username="other", first_name='other', last_name='last',
+                                 email='other@other.com', password='password')
+
+        for user in User.objects.all():
+            Post.objects.create(
+                author=user,
+                category=Category.objects.get(title='Games'),
+                title='post title',
+                description='desc',
+                status=Product.objects.get(title='Good')
+            )
+
+        response = self.client.get('/get_posts?author__id=' + str(self.user.id), content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['posts']), 1)
+        expected_post = Post.objects.get(author=self.user)
+        actual_post = response.json()['posts'][0]
+        self.assertEqual(expected_post.id, actual_post['id'])
