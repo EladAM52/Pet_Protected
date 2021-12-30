@@ -75,3 +75,11 @@ class SharePlaceViewTestCase(TestCase):
         self.assertDictEqual(response.json(), {
             'categories': ['Games', 'Clothes', 'Food', 'Textile']
         })
+        
+        
+    def test_get_status(self):
+        response = self.client.get('/get_status')
+        self.assertEqual(response.status_code, 200)
+        self.assertDictEqual(response.json(), {
+            'status': ['Like New', 'Good', 'Slightly damaged', 'Requires repair']
+        })
