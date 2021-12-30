@@ -115,6 +115,7 @@ app.controller("homeCtrl", function ($scope, $http) {
     $scope.isAuthenticated = global.isAuthenticated;
     $scope.username = global.username;
     $scope.categories = [];
+    $scope.status = [];
     $scope.postData = {};
     $scope.reviewData = {};
     $scope.uploadedImage = undefined;
@@ -197,6 +198,17 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
+    $scope.getStatus = function () {
+        $http({
+            method: 'GET',
+            url: '/get_status',
+        }).then(function successCallback(response) {
+            $scope.status = response.data.status
+        }, function errorCallback(response) {
+            $scope.error = response.data.message
+        });
+    }
+
     $scope.getPosts = function () {
         let params = {}
         if ($scope.currentCategory) {
@@ -298,8 +310,6 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
-    $scope.getCategories();
-    $scope.getPosts();
 
     $scope.deletePosts = function (post_id) {
         $http({
@@ -313,14 +323,10 @@ app.controller("homeCtrl", function ($scope, $http) {
     }
 
     $scope.editProfile = function () {
-        var fd = new FormData();
-        fd.append('data', angular.toJson($scope.profileToEdit));
-
-        return $http.post('edit_profile', fd, {
-            transformRequest: angular.identity,
-            headers: {
-                'Content-Type': undefined
-            }
+        $http({
+            method: 'POST',
+            url: '/edit_profile',
+            data: $scope.profileToEdit
         }).then(function successCallback(response) {
             $('#editProfileModal').modal('hide');
             $scope.profileToEdit = {};
@@ -329,15 +335,11 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
-     $scope.changePassword = function () {
-        var fd = new FormData();
-        fd.append('data', angular.toJson($scope.passwordToEdit));
-
-        return $http.post('change_password', fd, {
-            transformRequest: angular.identity,
-            headers: {
-                'Content-Type': undefined
-            }
+    $scope.changePassword = function () {
+            $http({
+            method: 'POST',
+            url: '/change_password',
+            data: $scope.passwordToEdit
         }).then(function successCallback(response) {
             $('#changePasswordModal').modal('hide');
             $scope.passwordToEdit = {};
@@ -346,9 +348,11 @@ app.controller("homeCtrl", function ($scope, $http) {
             $scope.error = response.data.message
         });
     }
+
+    $scope.getCategories();
+    $scope.getPosts();
+    $scope.getStatus();
 });
-
-
 
 
 app.directive('file', function () {
