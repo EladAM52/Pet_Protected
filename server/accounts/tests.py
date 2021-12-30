@@ -47,3 +47,16 @@ class AccountsViewTestCase(TestCase):
         self.assertEqual(test_user.last_name, responded_user['last_name'])
         self.assertEqual(test_user.profile.phone_number, responded_user['profile__phone_number'])
         self.assertEqual(0, responded_user['amount_posts'])
+        
+        
+    def test_login_user(self):
+        test_user = User.objects.create_user(username='test', password='password')
+        response = self.client.post('/accounts/login',
+                                    content_type="application/json",
+                                    data={
+                                        'username': 'test',
+                                        'password': 'password'
+                                    })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'success': True})
+        self.assertTrue(test_user.is_authenticated)
