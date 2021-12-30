@@ -191,3 +191,26 @@ class SharePlaceViewTestCase(TestCase):
         self.assertEqual(created_obj.description, 'desc')
         self.assertEqual(created_obj.category.title, 'Games')
         self.assertEqual(created_obj.status.title, 'Good')
+
+        
+
+    def test_create_review(self):
+        # only authenticated user can create post
+        self.client.login(username=self.user.username, password='password')
+
+        response = self.client.post('/create_review', content_type="application/json",
+                                    data={
+                                        'Fullname': 'test',
+                                        'title': 'title',
+                                        'description': 'desc',
+                                        'email': 'test@test.com'
+                                    })
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json(), {'success': True})
+        self.assertEqual(Review.objects.count(), 1)
+        created_obj = Review.objects.first()
+        self.assertEqual(created_obj.Fullname, 'test')
+        self.assertEqual(created_obj.title, 'title')
+        self.assertEqual(created_obj.description, 'desc')
+        self.assertEqual(created_obj.email, 'test@test.com')
