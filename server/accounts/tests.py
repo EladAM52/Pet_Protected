@@ -60,3 +60,11 @@ class AccountsViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'success': True})
         self.assertTrue(test_user.is_authenticated)
+
+        
+    def test_logout_user(self):
+        test_user = User.objects.create_user(username='test', password='password')
+        self.client.login(username=test_user.username, password='password')
+        response = self.client.post('/accounts/logout',
+                                    content_type="application/json")
+        self.assertEqual(response.status_code, 302)
