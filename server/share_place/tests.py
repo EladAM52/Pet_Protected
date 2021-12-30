@@ -14,3 +14,10 @@ class SharePlaceViewTestCase(TestCase):
                                              email='test@test.com', password='password')
         self.user.profile.phone_number = '123'
         self.user.save()
+    def test_home_page(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response.status_code, 404)
+        view = resolve('/')
+        self.assertEquals(view.func, home_page)
+        self.assertTemplateUsed(response, 'home.html')
