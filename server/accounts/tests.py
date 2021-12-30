@@ -28,3 +28,22 @@ class AccountsViewTestCase(TestCase):
         self.assertEqual(created_user.last_name, "last test")
         self.assertEqual(created_user.profile.phone_number, '111111111')
         self.assertTrue(created_user.is_authenticated)
+
+        
+    def test_get_users(self):
+        test_user = User.objects.create_user(username='test', password='password', last_name="last test",
+                                             first_name="first test", email="test@test.com")
+        self.client.login(username=test_user.username, password='password')
+        response = self.client.get('/accounts/get_users') # {'users': [{'name'...}]}
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['users']), 1)
+
+        responded_user = response.json()['users'][0]  # {'name'...}
+
+        self.assertEqual(test_user.username, responded_user['username'])
+        self.assertEqual(test_user.email, responded_user['email'])
+        self.assertEqual(test_user.first_name, responded_user['first_name'])
+        self.assertEqual(test_user.last_name, responded_user['last_name'])
+        self.assertEqual(test_user.profile.phone_number, responded_user['profile__phone_number'])
+        self.assertEqual(0, responded_user['amount_posts'])
