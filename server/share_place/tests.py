@@ -38,3 +38,12 @@ class SharePlaceViewTestCase(TestCase):
         view = resolve('/login')
         self.assertEquals(view.func, login_page)
         self.assertTemplateUsed(response, 'login.html')
+
+        
+    def test_register_page(self):
+        response = self.client.get('/register')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response.status_code, 404)
+        view = resolve('/register')
+        self.assertEquals(view.func, register_page)
+        self.assertTemplateUsed(response, 'register.html')
