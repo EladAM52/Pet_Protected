@@ -82,6 +82,12 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="category">Status</label>
+                            <select class="custom-select" id="status" ng-model="postData.status" required>
+                                <option value="{[{ sta }]}" ng-repeat="sta in status">{[{ sta }]}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="file">Select a file: </label>
                             <input id="file" type="file" file="file" accept="image/*"/>
                         </div>
@@ -96,7 +102,7 @@
         </div>
     </div>
     <!-- create Review Modal -->
-    <div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel"
+    <div class="modal fade" id="addReviewModal" tabindex="-1" arxia-labelledby="addReviewModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -161,6 +167,12 @@
                             <label for="category">Category</label>
                             <select class="custom-select" id="category" ng-model="postToEdit.category" required>
                                 <option value="{[{ cat }]}" ng-repeat="cat in categories">{[{ cat }]}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Status</label>
+                            <select class="custom-select" id="status" ng-model="postToEdit.status" required>
+                                <option value="{[{ sta }]}" ng-repeat="sta in status">{[{ sta }]}</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -257,4 +269,3 @@
     </div>
 </div>
 {% endblock %}
-
