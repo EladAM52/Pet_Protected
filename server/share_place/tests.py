@@ -229,3 +229,19 @@ class SharePlaceViewTestCase(TestCase):
         self.user.refresh_from_db()
         self.assertEqual(self.user.first_name, 'new first')
         self.assertEqual(self.user.last_name, 'new last')
+
+        
+    def test_change_password(self):
+        # only authenticated user can change password
+        self.client.login(username=self.user.username, password='password')
+        old_pass = self.user.password
+        response = self.client.post('/change_password', content_type="application/json",
+                                    data={
+                                        'password': '123123',
+                                        'password2': '123123'
+                                    })
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json(), {'success': True})
+        self.user.refresh_from_db()
+        self.assertNotEqual(self.user.password, old_pass)
