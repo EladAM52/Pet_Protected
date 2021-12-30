@@ -214,3 +214,18 @@ class SharePlaceViewTestCase(TestCase):
         self.assertEqual(created_obj.title, 'title')
         self.assertEqual(created_obj.description, 'desc')
         self.assertEqual(created_obj.email, 'test@test.com')
+        
+    def test_edit_profile(self):
+        # only authenticated user can edit profile
+        self.client.login(username=self.user.username, password='password')
+        response = self.client.post('/edit_profile', content_type="application/json",
+                                    data={
+                                        'first_name': 'new first',
+                                        'last_name': 'new last'
+                                    })
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json(), {'success': True})
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.first_name, 'new first')
+        self.assertEqual(self.user.last_name, 'new last')
