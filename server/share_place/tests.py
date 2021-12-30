@@ -69,3 +69,9 @@ class SharePlaceViewTestCase(TestCase):
         self.assertEquals(view.func, management_page)
         self.assertTemplateUsed(response, 'management.html')
       
+    def test_get_categories(self):
+        response = self.client.get('/get_categories')
+        self.assertEqual(response.status_code, 200)
+        self.assertDictEqual(response.json(), {
+            'categories': ['Games', 'Clothes', 'Food', 'Textile']
+        })
