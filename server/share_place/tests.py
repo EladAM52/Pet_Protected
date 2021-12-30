@@ -171,3 +171,23 @@ class SharePlaceViewTestCase(TestCase):
                 }
             ]
         })
+        
+        
+    def test_create_post(self):
+        # only authenticated user can create post
+        self.client.login(username=self.user.username, password='password')
+
+        data = json.dumps({'title': 'title',
+                           'description': 'desc',
+                           'category': 'Games',
+                           'status': 'Good'
+                           })
+        response = self.client.post('/create_post', data={'data': data})
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json(), {'success': True})
+        self.assertEqual(Post.objects.count(), 1)
+        created_obj = Post.objects.first()
+        self.assertEqual(created_obj.title, 'title')
+        self.assertEqual(created_obj.description, 'desc')
+        self.assertEqual(created_obj.category.title, 'Games')
+        self.assertEqual(created_obj.status.title, 'Good')
