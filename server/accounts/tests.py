@@ -1,3 +1,8 @@
 from django.test import TestCase
+from django.test import Client
+from django.contrib.auth.models import User
 
-# Create your tests here.
+
+class AccountsViewTestCase(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
