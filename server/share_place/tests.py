@@ -149,3 +149,25 @@ class SharePlaceViewTestCase(TestCase):
         actual_post = response.json()['posts'][0]
         self.assertEqual(post.id, actual_post['id'])
         self.assertTrue(actual_post['is_favorite'])
+
+
+    def test_get_reviews(self):
+        review = Review.objects.create(
+            Fullname='review',
+            title='title',
+            description='desc',
+            email='test@test.com'
+        )
+        response = self.client.get('/get_reviews')
+        self.assertEqual(response.status_code, 200)
+        self.assertDictEqual(response.json(), {
+            'reviews': [
+                {
+                    'id': review.id,
+                    'Fullname': review.Fullname,
+                    'title': review.title,
+                    'description': review.description,
+                    'email': review.email
+                }
+            ]
+        })
